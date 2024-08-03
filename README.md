@@ -29,3 +29,18 @@ The plugin adds the following code to your model:
 - DB table of the parent record is extended with `oarepo_workflows.records.models.RecordWorkflowParentModelMixin`
   to include the workflow field
 - A workflow component (`oarepo_workflows.services.components.workflow.WorkflowComponent`) is added to model service components.
+
+## Tests
+
+Note: the tests generated with oarepo-model-builder-tests plugin are not compatible
+with the workflow plugin. You need to write your own tests for the workflow.
+
+## Usage remarks
+
+The workflow module depends on the record and initial data passed to the permission policy.
+In the current version invenio does not pass those.  
+To circumvent this, you need to use the oarepo forks of the following invenio modules:
+
+- invenio-records-resources
+- invenio-drafts-resources
+
