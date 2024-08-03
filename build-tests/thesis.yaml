@@ -1,0 +1,29 @@
+record:
+  properties:
+    metadata:
+      properties:
+        title:
+          type: fulltext
+  module:
+    qualified: thesis
+  use:
+  - invenio
+  draft:
+    extra-code: |-2
+          test_options = "test"
+  draft-parent-record:
+    fields:
+      answer: "{{invenio_records.systemfields.constant.ConstantField}}('answer', 42)"
+  resource-config:
+    base-html-url: /ui/
+
+plugins:
+  builder:
+    disable:
+    - invenio_test_resource
+    - invenio_test_service
+    - invenio_tests_conftest
+
+profiles:
+  - record
+  - draft
