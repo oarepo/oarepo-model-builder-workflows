@@ -1,3 +1,11 @@
-from .workflow import WorkflowComponent, WorkflowOverrideDefaultsComponent
+from .workflow import (
+    WorkflowComponent,
+    WorkflowOverrideDefaultsComponent,
+    WorkflowPermissionsComponent,
+)
 
-WORKFLOW_COMPONENTS = [WorkflowComponent, WorkflowOverrideDefaultsComponent]
+WORKFLOW_COMPONENTS = [
+    WorkflowComponent,
+    WorkflowOverrideDefaultsComponent,
+    WorkflowPermissionsComponent,
+]
