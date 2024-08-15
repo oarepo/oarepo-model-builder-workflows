@@ -19,6 +19,7 @@ class WorkflowSampleDataBuilder(JSONBaseBuilder):
             self.output = None
         else:
             super().begin(current_model, schema)
+
     def finish(self):
         output: YAMLOutput = self.output
         if output:
