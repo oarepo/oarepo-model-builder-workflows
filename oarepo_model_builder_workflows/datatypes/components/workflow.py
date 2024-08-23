@@ -7,11 +7,11 @@ from oarepo_model_builder.datatypes.components.model import (
     ServiceModelComponent,
 )
 from oarepo_model_builder.datatypes.components.model.utils import set_default
+from oarepo_model_builder.utils.deepmerge import deepmerge
 from oarepo_model_builder_drafts.datatypes.components import (
     DraftParentComponent,
     ParentMarshmallowComponent,
 )
-from oarepo_model_builder.utils.deepmerge import deepmerge
 
 
 class WorkflowPermissionsComponent(DataTypeComponent):
@@ -36,7 +36,7 @@ class WorkflowComponent(DataTypeComponent):
     ]
 
     def before_model_prepare(self, datatype, *, context, **kwargs):
-        if datatype.root.profile  == "record":
+        if datatype.root.profile == "record":
             datatype.definition["permissions"].setdefault("presets", ["workflow"])
             fields = datatype.definition["record"].setdefault("fields", {})
             fields.setdefault(
@@ -60,19 +60,11 @@ class WorkflowComponent(DataTypeComponent):
             deepmerge(
                 datatype.definition["properties"].setdefault("state", {}),
                 {
-                "type": "keyword",
-                "marshmallow": {
-                    "read": True,
-                    "write": False
+                    "type": "keyword",
+                    "marshmallow": {"read": True, "write": False},
+                    "ui": {"marshmallow": {"read": True, "write": False}},
                 },
-                "ui": {
-                    "marshmallow": {
-                        "read": True,
-                        "write": False
-                    }
-                }
-            })
-
+            )
 
         if datatype.root.profile == "draft":
             fields = datatype.definition["record"].setdefault("fields", {})
