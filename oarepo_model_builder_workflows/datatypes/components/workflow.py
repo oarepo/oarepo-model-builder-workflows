@@ -37,7 +37,7 @@ class WorkflowComponent(DataTypeComponent):
 
     def before_model_prepare(self, datatype, *, context, **kwargs):
         if datatype.root.profile in {"record", "files", "draft_files"}:  # or ~any service with permission presets
-            datatype.definition["permissions"]["presets"] = ["workflow"]
+            datatype.definition["permissions"].setdefault("presets", ["workflow"])
 
         if datatype.root.profile == "record":
             fields = datatype.definition["record"].setdefault("fields", {})
