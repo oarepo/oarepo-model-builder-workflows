@@ -38,12 +38,6 @@ class WorkflowComponent(DataTypeComponent):
     def before_model_prepare(self, datatype, *, context, **kwargs):
 
         if datatype.root.profile == "record":
-            fields = datatype.definition["record"].setdefault("fields", {})
-            fields.setdefault(
-                "state",
-                "{{oarepo_workflows.records.systemfields.state.RecordStateField}}(initial='published')",
-            )
-
             datatype.definition["service-config"].setdefault("components", []).append(
                 "{{oarepo_workflows.services.components.workflow.WorkflowComponent}}"
             )
@@ -66,13 +60,6 @@ class WorkflowComponent(DataTypeComponent):
                 },
             )
 
-        if datatype.root.profile == "draft":
-            fields = datatype.definition["record"].setdefault("fields", {})
-            fields.setdefault(
-                "state",
-                "{{oarepo_workflows.records.systemfields.state.RecordStateField}}()",
-            )
-
 
 class WorkflowOverrideDefaultsComponent(DataTypeComponent):
     eligible_datatypes = [ModelDataType]
@@ -80,12 +67,20 @@ class WorkflowOverrideDefaultsComponent(DataTypeComponent):
         DefaultsModelComponent,
     ]
     affects = [
+        RecordModelComponent,
         DraftParentComponent,
         ParentMarshmallowComponent,
     ]
 
     def before_model_prepare(self, datatype, *, context, **kwargs):
         if datatype.root.profile == "record":
+            record = set_default(datatype, "record", {})
+            fields = datatype.definition["record"].setdefault("fields", {})
+            fields.setdefault(
+                "state",
+                "{{oarepo_workflows.records.systemfields.state.RecordStateField}}(initial='published')",
+            )
+
             datatype.definition.setdefault(
                 "draft-parent-record-metadata", {}
             ).setdefault(
@@ -100,4 +95,13 @@ class WorkflowOverrideDefaultsComponent(DataTypeComponent):
             datatype.definition.setdefault("parent-record-marshmallow", {}).setdefault(
                 "base-classes",
                 ["oarepo_workflows.services.records.schema.WorkflowParentSchema"],
+            )
+
+        if datatype.root.profile == "draft": # otherwise the default behavior is oarepo-model-builder-drafts
+                                             # setting the default for before this
+            record = set_default(datatype, "record", {})
+            fields = datatype.definition["record"].setdefault("fields", {})
+            fields.setdefault(
+                "state",
+                "{{oarepo_workflows.records.systemfields.state.RecordStateField}}()",
             )
