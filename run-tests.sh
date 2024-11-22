@@ -37,5 +37,5 @@ pip install -e "./build-tests/${MODEL}[tests]"
     cd ./build-tests/$MODEL
     find $MODEL -name '*.py' | grep -v '-' | tr '/' '.' | sed 's/\.__init__\.py//' | sed 's/\.py$//' | sed 's/^/import /'
 ) > ./build-tests/$MODEL/all_imports.py
-# temporarily commented out
-# python ./build-tests/$MODEL/all_imports.py
+
+python ./build-tests/$MODEL/all_imports.py
