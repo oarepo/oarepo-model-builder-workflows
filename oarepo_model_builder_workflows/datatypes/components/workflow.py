@@ -59,6 +59,14 @@ class WorkflowComponent(DataTypeComponent):
                     "ui": {"marshmallow": {"read": True, "write": False}},
                 },
             )
+            deepmerge(
+                datatype.definition["properties"].setdefault("state_timestamp", {}),
+                {
+                    "type": "datetime",
+                    "marshmallow": {"read": True, "write": False},
+                    "ui": {"marshmallow": {"read": True, "write": False}},
+                },
+            )
 
 
 class WorkflowOverrideDefaultsComponent(DataTypeComponent):
@@ -79,6 +87,10 @@ class WorkflowOverrideDefaultsComponent(DataTypeComponent):
             fields.setdefault(
                 "state",
                 "{{oarepo_workflows.records.systemfields.state.RecordStateField}}(initial='published')",
+            )
+            fields.setdefault(
+                "state_timestamp",
+                "{{oarepo_workflows.records.systemfields.state.RecordStateTimestampField}}()",
             )
 
             datatype.definition.setdefault(
@@ -104,4 +116,8 @@ class WorkflowOverrideDefaultsComponent(DataTypeComponent):
             fields.setdefault(
                 "state",
                 "{{oarepo_workflows.records.systemfields.state.RecordStateField}}()",
+            )
+            fields.setdefault(
+                "state_timestamp",
+                "{{oarepo_workflows.records.systemfields.state.RecordStateTimestampField}}()",
             )
